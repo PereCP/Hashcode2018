@@ -10,6 +10,9 @@ class Ride:
         self.stime = stime
         self.ftime = ftime
 
+    def __lt__(self, other):
+        return (self.getViability() < other.getViability())
+
     # As smaller the number is the ride is more viable.
     def getViability(self):
         return (distance(self.spos, self.fpos) / (self.ftime - self.stime))
@@ -17,14 +20,10 @@ class Ride:
 def distance(point1, point2):
     return abs(point1.x-point2.x) + abs(point1.y-point2.y)
 
-def sort_by_viability(rides):
-    rides.sort(key=lambda x: x.getViability)
-    return rides
-
 # Read file
-f = open("a_example.in")
+arxiu = open("a_example.in")
 # first line
-l1 = f.readline()
+l1 = arxiu.readline()
 l1 = l1.replace('\n', '')
 l1 = l1.split(' ')
 r = int(l1[0])
@@ -35,14 +34,15 @@ b = int(l1[4])
 t = int(l1[5])
 rides = []
 for x in range(n):
-    ln = f.readline()
+    ln = arxiu.readline()
     ln = ln.replace('\n', '')
     ln = ln.split(' ')
     # row = x
     # column = y
-    pointstart = Point(ln[0], ln[1])
-    pointfinish = Point(ln[2], ln[3])
-    ride = Ride(pointstart, pointfinish, ln[4], ln[5])
+    pointstart = Point(int(ln[0]), int(ln[1]))
+    pointfinish = Point(int(ln[2]), int(ln[3]))
+    ride = Ride(pointstart, pointfinish, int(ln[4]), int(ln[5]))
     rides.append(ride)
-rides = sort_by_viability(rides)
-print(ridess
+rides.sort()
+for x in rides:
+    print(x.spos.x + ' ' + x.spos.y + ' , ' + x.fpos.x + x.fpos.y)
