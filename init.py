@@ -45,4 +45,4 @@ for x in range(n):
     rides.append(ride)
 rides.sort()
 for x in rides:
-    print(x.spos.x + ' ' + x.spos.y + ' , ' + x.fpos.x + x.fpos.y)
+    print(str(x.spos.x) + ' ' + str(x.spos.y) + ' , ' + str(x.fpos.x) + ' '+  str(x.fpos.y))
