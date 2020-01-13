@@ -11,5 +11,5 @@ class Ride:
         self.timee = timee
 
 
-def distance(a, b):
-    return abs(a.x - b.x) + abs(a.y - b.y)
+def distance(point1, point2):
+    return abs(point1.x-point2.x) + abs(point1.y-point2.y)
