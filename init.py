@@ -17,11 +17,15 @@ class Ride:
 def distance(point1, point2):
     return abs(point1.x-point2.x) + abs(point1.y-point2.y)
 
-def viability(ride1, ride2):
-    time = ride2.stime - ride1.ftime
-    if (time < 0):
-        return 100000
-    return distance(ride1.fpos, ride2.spos) + time
+#Pre: car MUST have at least 1 ride.
+def viability(car, ride):
+    time = reqtime(car)
+    dist = distance(ride.spos, ride.fpos)
+    if (time + dist > ride.ftime):
+        return 6666666
+    print("time: " + str(time))
+    print("stime: " + str(ride.stime))
+    return distance(car[-1].fpos, ride.spos) - ride.ftime + time
 
 #This function returns the time elapsed to complete a car's travel.
 def reqtime(car):
@@ -32,11 +36,12 @@ def reqtime(car):
         sum += distance(car[i - 1].fpos, car[i].spos) + distance(car[i].spos, car[i].fpos)
     return sum
 
-def most_viable_ride(ride, rides):
+#Pre: car MUST have at least 1 ride
+def most_viable_ride(car, rides):
     min = 1000000
     best = Ride(0, Point(0, 0), Point(0, 0), 0, 0)
     for x in rides:
-        viab = viability(ride, x)
+        viab = viability(car, x)
         if (viab < min):
             min = viab
             best = x
@@ -46,26 +51,28 @@ def most_viable_ride(ride, rides):
 def sort_by_viability(rides, n):
     origin = Point(0, 0)
     start = Ride(0, origin, origin, 0, 0)
-    vtc = [[] for _ in range(n)]
+    vtc = [[start] for _ in range(n)]
     v = rides.copy()
     for i in range(n):
-        current = most_viable_ride(start, rides)
+        current = most_viable_ride(vtc[i], rides)
         rides.remove(current)
         vtc[i].append(current)
+        vtc[i].remove(start)
 
     while len(rides) > 0:
-        maxv = 0
-        id = 0
+        id = 0;
+        minv = 9999999
         corresponding = rides[-1]
         for i in range(n):
-            myride = most_viable_ride(vtc[i][-1], rides)
-            current = viability(vtc[i][-1], myride)
-            if (current < maxv):
-                maxv = current
-                id = i
+            myride = most_viable_ride(vtc[i], rides)
+            viab = viability(vtc[i], myride)
+            if (viab < minv):
+                minv = viab
                 corresponding = myride
+                id = i
         vtc[id].append(corresponding)
         rides.remove(corresponding)
+
     return vtc
 
 def print_cars(vtc):
@@ -105,5 +112,4 @@ for x in range(n):
     ride = Ride(x, pointstart, pointfinish, int(ln[4]), int(ln[5]))
     rides.append(ride)
 vtc = sort_by_viability(rides, f)
-print(reqtime(vtc[0]))
-print(reqtime(vtc[1]))
+print_cars(vtc)
