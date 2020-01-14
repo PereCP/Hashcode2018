@@ -21,10 +21,6 @@ def distance(point1, point2):
 def viability(car, ride):
     time = reqtime(car)
     dist = distance(ride.spos, ride.fpos)
-    if (time + dist > ride.ftime):
-        return 6666666
-    print("time: " + str(time))
-    print("stime: " + str(ride.stime))
     return distance(car[-1].fpos, ride.spos) - ride.ftime + time
 
 #This function returns the time elapsed to complete a car's travel.
@@ -70,8 +66,8 @@ def sort_by_viability(rides, n):
                 minv = viab
                 corresponding = myride
                 id = i
-        vtc[id].append(corresponding)
         rides.remove(corresponding)
+        vtc[id].append(corresponding)
 
     return vtc
 
@@ -89,7 +85,7 @@ def print_ride(ride):
 ############################
 
 # Read file
-arxiu = open("a_example.in")
+arxiu = open("b_should_be_easy.in")
 # first line
 l1 = arxiu.readline()
 l1 = l1.replace('\n', '')
