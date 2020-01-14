@@ -14,21 +14,23 @@ class Ride:
     def __lt__(self, other):
         return (self.getViability() < other.getViability())
 
-class Car:
-    def __init__(self, rides):
-        self.rides = rides
-
-    def totalViability(self):
-        sum = 0
-        for x in self.rides:
-            sum += x.getViability()
-        return sum
-
 def distance(point1, point2):
     return abs(point1.x-point2.x) + abs(point1.y-point2.y)
 
 def viability(ride1, ride2):
-    return distance(ride1.fpos, ride2.spos) + (ride2.stime - ride1.ftime)
+    time = ride2.stime - ride1.ftime
+    if (time < 0):
+        return 100000
+    return distance(ride1.fpos, ride2.spos) + time
+
+#This function returns the time elapsed to complete a car's travel.
+def reqtime(car):
+    sum = car[0].stime + distance(car[0].spos, car[0].fpos)
+    for i in range(1, len(car)):
+        if (sum < car[i].stime):
+            sum += car[i].stime - sum
+        sum += distance(car[i - 1].fpos, car[i].spos) + distance(car[i].spos, car[i].fpos)
+    return sum
 
 def most_viable_ride(ride, rides):
     min = 1000000
@@ -103,4 +105,5 @@ for x in range(n):
     ride = Ride(x, pointstart, pointfinish, int(ln[4]), int(ln[5]))
     rides.append(ride)
 vtc = sort_by_viability(rides, f)
-print_cars(vtc)
+print(reqtime(vtc[0]))
+print(reqtime(vtc[1]))
