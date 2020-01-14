@@ -1,9 +1,3 @@
-numbers = [1, 2, 3]
-v = numbers.copy()
-new = []
-for x in v:
-    new.append(x)
-    numbers.remove(x)
-
-print(new)
-print(numbers)
+mat = [[] for _ in range(3)]
+mat[0].append(2)
+print(mat)
