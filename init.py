@@ -27,7 +27,7 @@ def distance(point1, point2):
     return abs(point1.x-point2.x) + abs(point1.y-point2.y)
 
 def viability(ride1, ride2):
-    return (distance(ride2.spos, ride1.fpos) + (ride1.ftime - ride2.stime))
+    return
 
 def most_viable_ride(ride, rides):
     min = 1000000
